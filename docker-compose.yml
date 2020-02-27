@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  rabbit1:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit1"
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - dba_hell_network
+
+  producer:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    networks:
+      - dba_hell_network
+    depends_on:
+      - rabbit1
+
+
+networks:
+  dba_hell_network:
