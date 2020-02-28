@@ -8,9 +8,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"dba-hell/producer/types"
 	"dba-hell/rmq"
 	"dba-hell/rmq/consts"
+	"dba-hell/rmq/types"
 )
 
 type Procucer struct {

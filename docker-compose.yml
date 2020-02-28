@@ -23,6 +23,29 @@ services:
     depends_on:
       - rabbit1
 
+  writer:
+    build:
+      context: ./writer
+      dockerfile: Dockerfile
+    networks:
+      - dba_hell_network
+    depends_on:
+      - rabbit1
+
+  postgres:
+    restart: always
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=dba-test
+      - POSTGRES_USER=dba-test
+      - POSTGRES_DB=dba_test
+    networks:
+      - dba_hell_network
+    volumes:
+      - ./postgres/dba-hell.sql:/docker-entrypoint-initdb.d/dba-hell.sql
+
 
 networks:
   dba_hell_network:
