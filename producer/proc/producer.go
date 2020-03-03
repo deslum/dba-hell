@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"dba-hell/rmq"
@@ -14,6 +13,7 @@ import (
 )
 
 type Procucer struct {
+	mx      *sync.Mutex
 	wg      *sync.WaitGroup
 	rabbit  *rmq.RabbitMQ
 	counter uint64
@@ -21,6 +21,7 @@ type Procucer struct {
 
 func NewProducer(rabbit *rmq.RabbitMQ) *Procucer {
 	return &Procucer{
+		mx:      new(sync.Mutex),
 		wg:      new(sync.WaitGroup),
 		rabbit:  rabbit,
 		counter: 0,
@@ -39,13 +40,16 @@ func (o *Procucer) Start() {
 func (o *Procucer) process(i int) {
 	defer o.wg.Done()
 	for {
+
+		o.mx.Lock()
+		o.counter++
 		body := &types.Message{
-			Id:        atomic.LoadUint64(&o.counter),
+			Id:        o.counter,
 			Body:      fmt.Sprintf("Process number %v", i),
 			Timestamp: time.Now().UTC().Unix(),
 		}
-
 		log.Println(body)
+		o.mx.Unlock()
 
 		b, err := json.Marshal(body)
 		if err != nil {
@@ -59,7 +63,6 @@ func (o *Procucer) process(i int) {
 			continue
 		}
 
-		atomic.AddUint64(&o.counter, 1)
 		time.Sleep(time.Millisecond * 50)
 	}
 }
