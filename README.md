@@ -23,6 +23,8 @@ make start
 
 **Архитектура**
 
+![Architecture](https://gitlab.com/deslum/dba-hell/-/blob/master/arch.png)
+
 **Producer**: сервис, гененрирующий значения от 0 до max от uint64 и отправляет RabbitMQ 
  сообщения формата
 ```json
