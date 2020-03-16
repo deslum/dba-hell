@@ -31,8 +31,8 @@ make start
  {
  	"id": 10,                     
  	"name": "TODO: Create name",   
- 	"number": 2,                   
- 	"body": "Thread number 2",     
+ 	"number": 3,                   
+ 	"body": "Thread number 3",     
  	"ts": 1583506044              
  }
 ```
