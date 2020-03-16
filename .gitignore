@@ -1,2 +1,3 @@
-./producer
-./writer
+./producer/producer
+./writer/writer
+./postgres/data

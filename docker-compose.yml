@@ -22,6 +22,7 @@ services:
       - dba_hell_network
     depends_on:
       - rabbit1
+      - postgres
 
   writer:
     build:
@@ -31,6 +32,7 @@ services:
       - dba_hell_network
     depends_on:
       - rabbit1
+      - postgres
 
   postgres:
     restart: always
@@ -45,7 +47,7 @@ services:
       - dba_hell_network
     volumes:
       - ./postgres/dba-hell.sql:/docker-entrypoint-initdb.d/dba-hell.sql
-
+      - ./postgres/data:/var/lib/postgresql/data
 
 networks:
   dba_hell_network:

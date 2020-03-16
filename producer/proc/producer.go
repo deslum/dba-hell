@@ -19,6 +19,7 @@ type Procucer struct {
 	counter uint64
 }
 
+// NewProducer init Producer struct
 func NewProducer(rabbit *rmq.RabbitMQ) *Procucer {
 	return &Procucer{
 		mx:      new(sync.Mutex),
@@ -28,8 +29,9 @@ func NewProducer(rabbit *rmq.RabbitMQ) *Procucer {
 	}
 }
 
+// Start function start process generate message and send to RabbitMQ
 func (o *Procucer) Start() {
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 4; i++ {
 		o.wg.Add(1)
 		go o.process(i)
 	}
@@ -40,15 +42,15 @@ func (o *Procucer) Start() {
 func (o *Procucer) process(i int) {
 	defer o.wg.Done()
 	for {
-
 		o.mx.Lock()
 		o.counter++
 		body := &types.Message{
 			Id:        o.counter,
+			Name:      "TODO: Create name",
+			Number:    i,
 			Body:      fmt.Sprintf("Process number %v", i),
 			Timestamp: time.Now().UTC().Unix(),
 		}
-		log.Println(body)
 		o.mx.Unlock()
 
 		b, err := json.Marshal(body)
@@ -63,6 +65,6 @@ func (o *Procucer) process(i int) {
 			continue
 		}
 
-		time.Sleep(time.Millisecond * 50)
+		time.Sleep(time.Millisecond * 10)
 	}
 }

@@ -3,9 +3,10 @@ package proc
 import (
 	"database/sql"
 	"encoding/json"
-	"github.com/streadway/amqp"
 	"log"
 	"sync"
+
+	"github.com/streadway/amqp"
 
 	"dba-hell/rmq/types"
 )
@@ -27,7 +28,7 @@ func NewWriter(deliveryChan <-chan amqp.Delivery, db *sql.DB) *Writer {
 }
 
 func (o *Writer) Start() {
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 2; i++ {
 		o.wg.Add(1)
 		go o.process()
 	}
@@ -37,7 +38,7 @@ func (o *Writer) Start() {
 
 func (o *Writer) process() {
 	defer o.wg.Done()
-	sqlStatement := `INSERT INTO "dba_test.threads" (id, body, timestamp) VALUES ($1, $2, to_timestamp($3))`
+	sqlStatement := `INSERT INTO "dba_test.threads" ("id", "name", "number", "body", "timestamp") VALUES ($1, $2, $3, $4, to_timestamp($5))`
 	txCount := 0
 	tx, err := o.db.Begin()
 	if err != nil {
@@ -68,7 +69,7 @@ func (o *Writer) process() {
 
 			txCount++
 
-			_, err = o.db.Exec(sqlStatement, message.Id, message.Body, message.Timestamp)
+			_, err = o.db.Exec(sqlStatement, message.Id, message.Name, message.Number, message.Body, message.Timestamp)
 			if err != nil {
 				log.Println(err)
 				continue

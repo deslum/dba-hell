@@ -29,6 +29,11 @@ func (o *RabbitMQ) InitPublisher() error {
 		return fmt.Errorf("channel: %s", err)
 	}
 
+	err = o.producer.Qos(5000, 0, false)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

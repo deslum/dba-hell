@@ -1,5 +1,5 @@
-FROM ubuntu:18.04
+FROM golang:1.14
 
 ADD writer ./writer
 
-CMD ["./writer"]
+CMD sleep 30 && ./writer
