@@ -11,13 +11,13 @@ make start
 
 **Доступы:**
 
-1. RabbitMQ 
+1. RabbitMQ:
 
-- URL: localhost:15672
-- Login: rabbitmq
-- Password: rabbitmq
+- URL: localhost:15672.
+- Login: rabbitmq.
+- Password: rabbitmq.
 
-2. Postgres 
+2. Postgres:
 
 - URI "postgres://dba-test:dba-test@localhost/dba_test?sslmode=disable"
 
@@ -26,34 +26,31 @@ make start
 ![](arch.png)
 
 **Producer**: сервис, генерирующий значения от 0 до max от uint64 и отправляющий в RabbitMQ 
- сообщения формата
+ сообщения:
 ```json
  {
- 	"id": 10,                     
- 	"name": "TODO: Create name",   
- 	"number": 3,                   
- 	"body": "Thread number 3",     
- 	"ts": 1583506044              
+   "id": 10,                     
+   "name": "TODO: Create name",   
+   "number": 3,                   
+   "body": "Thread number 3",     
+   "ts": 1583506044              
  }
 ```
 
-**Writer** сервис, берет из очереди сообщения и вставляет пачками в Postgres.
+**Writer** сервис, берёт из очереди сообщения и вставляет пачками в Postgres.
 
 
 **Задача**
 
 1. Увеличить производительность вставок в БД, чтобы скорость работы Writer была выше, чем скорость работы Producer.
 При этом изменять код сервисов не нужно. Конфигурировать только Postgres.
-2. Перенести индексы и БД на разные диски
-3. Настроить avtovacuum. 
+2. Перенести индексы и БД на разные диски.
+3. Настроить autovacuum. 
 
-Успехов!!!
+Желаю успехов!
 
 Есть предложения по улучшению? Пиши:
 
 Email: windowod@gmail.com\
 Twitter: @Randomazer\
 Telegram: @Randomazer
-
-
-

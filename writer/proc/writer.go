@@ -38,7 +38,7 @@ func (o *Writer) Start() {
 
 func (o *Writer) process() {
 	defer o.wg.Done()
-	sqlStatement := `INSERT INTO "dba_test.threads" ("id", "name", "number", "body", "timestamp") VALUES ($1, $2, $3, $4, to_timestamp($5))`
+	sqlStatement := `INSERT INTO dba_test.threads (id, name, number, body, ts) VALUES ($1, $2, $3, $4, to_timestamp($5))`
 	txCount := 0
 	tx, err := o.db.Begin()
 	if err != nil {

@@ -47,7 +47,5 @@ services:
       - dba_hell_network
     volumes:
       - ./postgres/dba-hell.sql:/docker-entrypoint-initdb.d/dba-hell.sql
-      - ./postgres/data:/var/lib/postgresql/data
-
 networks:
   dba_hell_network:
